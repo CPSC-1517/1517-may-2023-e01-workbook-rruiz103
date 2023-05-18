@@ -155,13 +155,74 @@
             // that alters the property value. If the validation is done in the property, it would not be an auto implemented proeprty 
             // but a fully implemented property
             // .Today has a time of 00:00:000 AM BUT .Now has a specific time of day at execution
-            // by using the .Todat.AddDays(1) you cover all times on a specific date
+            // by using the .Today.AddDays(1) you cover all times on a specific date
             if (startdate >= DateTime.Today.AddDays(1)) 
             { 
                 throw new ArgumentException($"The start date {startdate} is in the future");
             }
             StartDate= startdate;
         } // End of Employment (Greedy Constructor)
+
+
+        // METHODS
+        // Behaviours (a.k.a Methods)
+
+        // A method consists of a header  Syntax: accesslevel returndatatype methodname (parameters)
+        // a coding block {........}
+
+        public void SetEmploymentResponsibilityLevel(SupervisoryLevel level)
+        { 
+
+            // the peroperty has a private set therefore the only way to assign the value to the property is either
+            // via the constructor at creation time or via public method within the class
+            // what about the validation of the value
+            // validation can be done in multiple places
+            // a.) can it be done in this method? = Yes
+            // b) can tt be done in the property = Yes if proeprty is fully implemented
+
+             Level= level;
+
+        } // End SetEmploymentResponsibilityLevel Method
+
+        public void CorrectStartDate(DateTime startdate)
+        {
+            // The StartDate property is an auto implemented property
+            // The startDate property has no validation code
+            // You need to do any validation on the incoming value wherever you plan to alter the existing value in the class
+            if (startdate >= DateTime.Today.AddDays(1))
+            {
+                throw new ArgumentException($"The start date {startdate} is in the future");
+            }
+            StartDate = startdate;
+
+        } // End of CorrectStartDate Method
+
+        public override string ToString()
+        {
+            return $"{Title},{Level},{StartDate.ToString("MMM dd, yyyy")}";
+
+            // Other way to format date
+            // string formattedStartDate = StartDate.ToString("MMM dd, yyyy");
+            // return $"{Title},{Level},{formattedStartDate}";
+
+        } // End of ToString Method
+
+        public void UpdateCurrentEmploymentYearsExperience()
+        {
+
+            TimeSpan span = DateTime.Now- StartDate;
+            int days = span.Days;
+            // or
+            Years = Math.Round((span.Days / 365.25), 1);
+
+            // Other way to calculate date difference
+            // TimeSpan difference = StartDate.Subtract(DateTime.Now);
+            // Years = difference.TotalDays;
+
+        } // End of UpdateCurrentEmploymentYearsExperience Mwthod
+
+
+
 
 
 

@@ -84,7 +84,7 @@
                     // if (value < 0)      // using Utilties generic method to do this test
                     if (!Utilities.IsZeroOrPositive(value))
                     { 
-                        throw new ArgumentOutOfRangeException("value");
+                        throw new ArgumentOutOfRangeException(value.ToString());
                     }
                     _Years = value;
                 }
@@ -126,7 +126,7 @@
             // A practice that I personally use is to avoid referencing my data members directly 
             // especially if the property contains validation
 
-            Title = "unknown";
+            Title = "Unknown";
             Level = SupervisoryLevel.TeamMember;
             StartDate = DateTime.Today;
 
@@ -156,11 +156,23 @@
             // but a fully implemented property
             // .Today has a time of 00:00:000 AM BUT .Now has a specific time of day at execution
             // by using the .Today.AddDays(1) you cover all times on a specific date
+
             if (startdate >= DateTime.Today.AddDays(1)) 
             { 
                 throw new ArgumentException($"The start date {startdate} is in the future");
             }
             StartDate= startdate;
+
+            if (years > 0.0)
+            {
+                Years = (double)years;
+            }
+            else
+            {
+                TimeSpan span = DateTime.Now - StartDate;
+                Years = Math.Round((span.Days / 365.25), 1);
+            }
+        
         } // End of Employment (Greedy Constructor)
 
 
@@ -199,7 +211,7 @@
 
         public override string ToString()
         {
-            return $"{Title},{Level},{StartDate.ToString("MMM dd, yyyy")}";
+            return $"{Title},{Level},{StartDate.ToString("MMM dd, yyyy")},{Years}";
 
             // Other way to format date
             // string formattedStartDate = StartDate.ToString("MMM dd, yyyy");
@@ -207,7 +219,7 @@
 
         } // End of ToString Method
 
-        public void UpdateCurrentEmploymentYearsExperience()
+        public double UpdateCurrentEmploymentYearsExperience()
         {
 
             TimeSpan span = DateTime.Now- StartDate;
@@ -215,13 +227,13 @@
             // or
             Years = Math.Round((span.Days / 365.25), 1);
 
+            return Years;
+
             // Other way to calculate date difference
             // TimeSpan difference = StartDate.Subtract(DateTime.Now);
             // Years = difference.TotalDays;
 
         } // End of UpdateCurrentEmploymentYearsExperience Mwthod
-
-
 
 
 

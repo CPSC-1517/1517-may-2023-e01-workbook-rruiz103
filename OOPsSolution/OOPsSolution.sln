@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OOPsReview", "OOPsReview\OO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestingForSystem", "..\..\..\..\..\Downloads\NAIT\CPSC 1517\Demo - UnitTestingForSystem - Employment Unit Testing Project\UnitTestingForSystem\UnitTestingForSystem.csproj", "{9E59C523-E834-47C3-88FC-8873DB1DD79D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBox", "Sandbox\SandBox.csproj", "{EEA040FA-5278-461D-ADD6-7A92C649FA24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9E59C523-E834-47C3-88FC-8873DB1DD79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E59C523-E834-47C3-88FC-8873DB1DD79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E59C523-E834-47C3-88FC-8873DB1DD79D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA040FA-5278-461D-ADD6-7A92C649FA24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA040FA-5278-461D-ADD6-7A92C649FA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA040FA-5278-461D-ADD6-7A92C649FA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA040FA-5278-461D-ADD6-7A92C649FA24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

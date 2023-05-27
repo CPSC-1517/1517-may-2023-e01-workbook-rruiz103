@@ -37,8 +37,16 @@ namespace OOPsReview
 
         // Person Greedy Constructor
         public Person(string firstname, string lastname, Residence address, List<Employment> employmentpositions)
-        { 
-            FirstName= firstname;
+        {
+            if (string.IsNullOrWhiteSpace(firstname))
+            { 
+                throw new ArgumentNullException("First Name is required");
+            }
+            if (string.IsNullOrWhiteSpace(lastname))
+            {
+                throw new ArgumentNullException("Last Name is required");
+            }
+            FirstName = firstname;
             LastName= lastname;
             Address= address;
             
@@ -57,7 +65,9 @@ namespace OOPsReview
 
         // Person Default Constructor
         public Person()
-        { 
+        {
+            FirstName = "unknown";
+            LastName = "unknown";
             EmploymentPositions = new List<Employment>(); // create an empty instance of the list
         } // End of Person Default Constructor
 

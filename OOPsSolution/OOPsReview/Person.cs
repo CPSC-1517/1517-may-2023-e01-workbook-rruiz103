@@ -8,12 +8,58 @@ namespace OOPsReview
 {
     public class Person
     {
-        public string FirstName;
-        public string LastName;
-        public Person(string firstname, string lastname)
+        private string _FirstName;
+        private string _LastName;
+
+        // FirstName Property
+        public string FirstName
+        {
+            get;set;
+        } // End of FirstName property
+
+        // LastName Property
+        public string LastName
+        {
+            get; set;
+        } // End of LastName property
+
+        // Address Property
+        public Residence Address 
+        { 
+            get; set;
+        } // End of Address Property
+
+        // EmploymentPositions Property
+        public List<Employment> EmploymentPositions 
+        { 
+            get; set;
+        } // End of EmploymentPositions Property
+
+        // Person Greedy Constructor
+        public Person(string firstname, string lastname, Residence address, List<Employment> employmentpositions)
         { 
             FirstName= firstname;
             LastName= lastname;
-        }
-    }
-}
+            Address= address;
+            
+            if (employmentpositions != null)
+            {
+                EmploymentPositions = employmentpositions; // store the list of employments
+            }
+            EmploymentPositions = new List<Employment>();
+
+            // else 
+            // { 
+            //    EmploymentPositions = new List<Employment>(); // create an instance of the list
+            // }
+
+        } // End of Person Greedy Constructor
+
+        // Person Default Constructor
+        public Person()
+        { 
+            EmploymentPositions = new List<Employment>(); // create an empty instance of the list
+        } // End of Person Default Constructor
+
+    } // End of Person Class
+} // End of OOPsReview namespace

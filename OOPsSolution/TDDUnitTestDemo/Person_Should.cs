@@ -109,7 +109,7 @@ namespace TDDUnitTestDemo
 
         } // End of Create_a_Greedy_Instance_With_No_Names_Throws_Exception Test
 
-        /*
+        
 
         [Theory]
         [InlineData(null)]
@@ -131,7 +131,7 @@ namespace TDDUnitTestDemo
 
             // Assert Area (testing of the action)
             action.Should().Throw<ArgumentNullException>();
-        } */
+        } // End of Throw_Exception_When_setting_FirstName_To_Missing_Data
 
         #endregion InvalidData
 

@@ -64,6 +64,7 @@ namespace TDDUnitTestDemo
             me.FirstName.Should().Be(expectedfirstname);
         } // End of Change_FirstName_To_New_Name Test
 
+        [Fact]
         public void Change_LastName_To_New_Name()
         {
             // Arrange Area (setup)
@@ -80,6 +81,28 @@ namespace TDDUnitTestDemo
             // Assert Area (testing of the action)
             me.LastName.Should().Be(expectedlastname);
         } // End of Change_LastName_To_New_Name Test
+
+        [Fact]
+        public void Change_Both_FirstName_And_LastName_To_New_Name()
+        {
+            // Arrange Area (setup)
+            string firstname = "don";
+            string lastname = "welch";
+            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+            Person me = new Person(firstname, lastname, address, null);
+            string expectedfirstname = "pat";
+            string expectedlastname = "smith";
+
+            // Act Area (execution) ------ SUT means subject under test
+            me.ChangeName(expectedfirstname,expectedlastname);
+
+            // Assert Area (testing of the action)
+            me.FirstName.Should().Be(expectedfirstname);
+            me.LastName.Should().Be(expectedlastname);
+
+        } // End of Change_Both_FirstName_And_LastName_To_New_Name Test
+
+
 
 
         #endregion ValidData
@@ -110,28 +133,87 @@ namespace TDDUnitTestDemo
         } // End of Create_a_Greedy_Instance_With_No_Names_Throws_Exception Test
 
         
-
+        // changing the firstname via the FirstName property
+        // validation of firstname is required.
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("    ")]
        
-        public void Throw_Exception_When_setting_FirstName_To_Missing_Data(string firstname)
+        public void Throw_Exception_When_setting_FirstName_To_Missing_Data(string changename)
         {
             // Arrange Area (setup)
+            string firstname = "don";
             string lastname = "welch";
-
             Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
             string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
-            Person me = new Person("unkown", lastname, address, null);
-            string expectedfirstname = "unknown";
+            Person me = new Person(firstname, lastname, address, null);
+            
 
             // Act Area (execution) ------ SUT means subject under test
-            Action action = () => new Person(firstname, lastname, address, null);
+            // Testing will the property capture an invalid name change
+            Action action = () => me.FirstName= changename;
 
             // Assert Area (testing of the action)
-            action.Should().Throw<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>().WithMessage("*First Name is required*");
         } // End of Throw_Exception_When_setting_FirstName_To_Missing_Data
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("    ")]
+
+        public void Throw_Exception_When_setting_LastName_To_Missing_Data(string changename)
+        {
+            // Arrange Area (setup)
+            string firstname = "don";
+            string lastname = "welch";
+            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
+            Person me = new Person(firstname, lastname, address, null);
+
+
+            // Act Area (execution) ------ SUT means subject under test
+            // Testing will the property capture an invalid name change
+            // Action is a special unit testing datatype that records the resul;ts of the executed statement into a variable action
+            Action action = () => me.LastName = changename;
+
+            // Assert Area (testing of the action)
+            action.Should().Throw<ArgumentNullException>().WithMessage("*Last Name is required*");
+        } // End of Throw_Exception_When_setting_FirstName_To_Missing_Data
+
+
+        [Theory]
+        [InlineData(null, "welch")]
+        [InlineData("don", null)]
+        [InlineData("", "welch")]
+        [InlineData("don", "")]
+        [InlineData("     ", "welch")]
+        [InlineData("don", "     ")]
+        public void Throw_Exception_When_Changing_FirstName_And_LastName(string changedfirstname, string changedlastname)
+        {
+
+            // Arrange Area (setup)
+            string firstname = "don";
+            string lastname = "welch";
+            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
+            Person me = new Person(firstname, lastname, address, null);
+
+
+            // Act Area (execution) ------ SUT means subject under test
+            Action action = () => me.ChangeName(changedfirstname, changedlastname);
+        ;
+            // Assert Area (testing of the action)
+            action.Should().Throw<ArgumentNullException>().WithMessage("*is required*");
+
+        } // End of Throw_Exception_When_Changing_FirstName_And_LastName Test
+
+
+
+
+
+
 
         #endregion InvalidData
 

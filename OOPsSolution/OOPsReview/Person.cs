@@ -14,13 +14,27 @@ namespace OOPsReview
         // FirstName Property
         public string FirstName
         {
-            get;set;
+            get { return _FirstName; }
+            set {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        throw new ArgumentNullException("First Name is required");
+                    }
+                    _FirstName = value;
+                }
         } // End of FirstName property
 
         // LastName Property
         public string LastName
         {
-            get; set;
+            get { return _LastName; }
+            set {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentNullException("Last Name is required");
+                }
+                _LastName = value; 
+                }
         } // End of LastName property
 
         // Address Property
@@ -38,14 +52,7 @@ namespace OOPsReview
         // Person Greedy Constructor
         public Person(string firstname, string lastname, Residence address, List<Employment> employmentpositions)
         {
-            if (string.IsNullOrWhiteSpace(firstname))
-            { 
-                throw new ArgumentNullException("First Name is required");
-            }
-            if (string.IsNullOrWhiteSpace(lastname))
-            {
-                throw new ArgumentNullException("Last Name is required");
-            }
+            
             FirstName = firstname;
             LastName= lastname;
             Address= address;
@@ -54,12 +61,7 @@ namespace OOPsReview
             {
                 EmploymentPositions = employmentpositions; // store the list of employments
             }
-            EmploymentPositions = new List<Employment>();
-
-            // else 
-            // { 
-            //    EmploymentPositions = new List<Employment>(); // create an instance of the list
-            // }
+            EmploymentPositions = new List<Employment>();           
 
         } // End of Person Greedy Constructor
 
@@ -70,6 +72,20 @@ namespace OOPsReview
             LastName = "unknown";
             EmploymentPositions = new List<Employment>(); // create an empty instance of the list
         } // End of Person Default Constructor
+
+
+        // Method: ChangeName
+        public void ChangeName(string firstname, string lastname)
+        {
+            FirstName= firstname;
+            LastName= lastname;
+        } // End of ChangeName Method
+
+
+
+
+
+
 
     } // End of Person Class
 } // End of OOPsReview namespace

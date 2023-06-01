@@ -82,7 +82,11 @@ namespace OOPsReview
         } // End of ChangeName Method
 
 
+        public string FullName
+        {
+            get {return LastName+", "+FirstName; }
 
+        }
 
 
 

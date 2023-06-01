@@ -102,6 +102,23 @@ namespace TDDUnitTestDemo
 
         } // End of Change_Both_FirstName_And_LastName_To_New_Name Test
 
+        [Fact]
+        public void Return_The_FullName_of_Person()
+        {
+            // Arrange Area (setup)
+            string firstname = "Don";
+            string lastname = "Welch";
+            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+            Person sut = new Person(firstname, lastname, address, null);
+            string expectedfullname = "Welch, Don";
+
+            // Act Area (execution) ------ SUT means subject under test
+            string actual = sut.FullName;
+
+            // Assert Area (testing of the action)
+            actual.Should().Be(expectedfullname);
+
+        } // End of Create_an_Instance_With_First_And_Last_Name_Residence_With_NO_List_Of_Employment Test
 
 
 

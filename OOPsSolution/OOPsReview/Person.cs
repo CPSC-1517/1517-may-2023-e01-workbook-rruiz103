@@ -44,10 +44,21 @@ namespace OOPsReview
         } // End of Address Property
 
         // EmploymentPositions Property
-        public List<Employment> EmploymentPositions 
-        { 
-            get; set;
-        } // End of EmploymentPositions Property
+        public List<Employment> EmploymentPositions
+        { get; set; } //= new List<Employment>(); // End of EmploymentPositions Property
+
+        // FullName Property
+        public string FullName
+        {
+            get { return LastName + ", " + FirstName; }
+
+        } // End FullName Property
+
+        // NumberOfEmployments Property
+        public int NumberOfEmployments
+        {
+            get { return EmploymentPositions.Count(); }
+        } // End of NumberOfEmployments Property
 
         // Person Greedy Constructor
         public Person(string firstname, string lastname, Residence address, List<Employment> employmentpositions)
@@ -60,8 +71,7 @@ namespace OOPsReview
             if (employmentpositions != null)
             {
                 EmploymentPositions = employmentpositions; // store the list of employments
-            }
-            EmploymentPositions = new List<Employment>();           
+            }        
 
         } // End of Person Greedy Constructor
 
@@ -81,12 +91,20 @@ namespace OOPsReview
             LastName= lastname;
         } // End of ChangeName Method
 
-
-        public string FullName
+        // AddEmployment Method
+        public void AddEmployment(Employment employment)
         {
-            get {return LastName+", "+FirstName; }
+            if (employment == null)
+            {
+                throw new ArgumentNullException("Employment record position is required.");
+            }
+            EmploymentPositions.Add(employment);
+        } // End of AddEmployment Method
 
-        }
+
+
+
+
 
 
 

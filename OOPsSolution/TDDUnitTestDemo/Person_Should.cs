@@ -1,9 +1,23 @@
 using FluentAssertions;
 using OOPsReview;
+using Xunit.Sdk;
+
 namespace TDDUnitTestDemo
 {
     public class Person_Should
     {
+
+        public Person Make_SUT_Instance()
+        {
+            string firstname = "don";
+            string lastname = "welch";
+            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+            Person me = new Person(firstname, lastname, address, null);
+
+            return me;
+
+        } // End of Make_SUT_Instance for Refractoring
+
         #region ValidData
         // Attribute Title 
         // 1. Fact = which does one test and is usually set up and coded within the test
@@ -50,11 +64,7 @@ namespace TDDUnitTestDemo
         public void Change_FirstName_To_New_Name()
         {
             // Arrange Area (setup)
-            string firstname = "don";
-            string lastname = "welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
-            Person me = new Person(firstname, lastname, address, null);
+            Person me = Make_SUT_Instance();
             string expectedfirstname = "bob";
 
             // Act Area (execution) ------ SUT means subject under test
@@ -68,11 +78,7 @@ namespace TDDUnitTestDemo
         public void Change_LastName_To_New_Name()
         {
             // Arrange Area (setup)
-            string firstname = "don";
-            string lastname = "welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
-            Person me = new Person(firstname, lastname, address, null);
+            Person me = Make_SUT_Instance();
             string expectedlastname = "smith";
 
             // Act Area (execution) ------ SUT means subject under test
@@ -82,14 +88,11 @@ namespace TDDUnitTestDemo
             me.LastName.Should().Be(expectedlastname);
         } // End of Change_LastName_To_New_Name Test
 
-        [Fact]
+        [Fact]    
         public void Change_Both_FirstName_And_LastName_To_New_Name()
         {
             // Arrange Area (setup)
-            string firstname = "don";
-            string lastname = "welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            Person me = new Person(firstname, lastname, address, null);
+            Person me = Make_SUT_Instance();
             string expectedfirstname = "pat";
             string expectedlastname = "smith";
 
@@ -106,11 +109,8 @@ namespace TDDUnitTestDemo
         public void Return_The_FullName_of_Person()
         {
             // Arrange Area (setup)
-            string firstname = "Don";
-            string lastname = "Welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            Person sut = new Person(firstname, lastname, address, null);
-            string expectedfullname = "Welch, Don";
+            Person sut = Make_SUT_Instance();
+            string expectedfullname = "welch, don";
 
             // Act Area (execution) ------ SUT means subject under test
             string actual = sut.FullName;
@@ -118,7 +118,70 @@ namespace TDDUnitTestDemo
             // Assert Area (testing of the action)
             actual.Should().Be(expectedfullname);
 
-        } // End of Create_an_Instance_With_First_And_Last_Name_Residence_With_NO_List_Of_Employment Test
+        } // End of Return_The_FullName_of_Person Test
+
+        [Fact]
+        public void Return_The_Number_of_Employment_Instances_For_New_Person()
+        {
+            // Arrange Area (setup)
+            // No Employment instances
+            Person sut = Make_SUT_Instance();
+
+            // Act Area (execution) ------ SUT means subject under test
+            int actual = sut.NumberOfEmployments;
+
+            // Assert Area (testing of the action)
+            actual.Should().Be(0);
+
+        } // End of Return_The_Number_of_Employment_Instances_For_New_Person Test
+
+        [Fact]
+        public void Add_First_Employment_Instance()
+        {
+            //Arrange (setup)
+            //no employment instances
+            Person sut = Make_SUT_Instance();
+            int expectednumberofemployment = 1;
+
+            Employment employment = new Employment("TDD member", SupervisoryLevel.TeamMember, new DateTime(2018, 03, 10));
+
+            //Act (execution)
+            sut.AddEmployment(employment);
+
+
+            //Assert (testing of the action)
+            sut.NumberOfEmployments.Should().Be(expectednumberofemployment);
+            sut.EmploymentPositions[0].ToString().Should().Be(employment.ToString());
+        } // End of Add_First_Employment_Instance Test
+
+        [Fact]
+        public void Add_Another_Employment_Instance()
+        {
+            // Arrange Area (setup)
+            string firstname = "don";
+            string lastname = "welch";
+            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+            List<Employment> employments = new List<Employment>();
+            employments.Add(new Employment("TDD member", SupervisoryLevel.TeamMember, new DateTime(2016, 03, 10)));
+            employments.Add(new Employment("TDD Lead", SupervisoryLevel.TeamLeader, new DateTime(2020, 03, 10)));
+            
+            Person sut = new Person(firstname, lastname, address, employments);
+            int expectednumberofemployment = 3;
+
+            Employment employment = new Employment("TDD Supervisor", SupervisoryLevel.Supervisor, new DateTime(2023, 03, 10));
+
+            // Act Area (execution) ------ SUT means subject under test
+            sut.AddEmployment(employment);
+
+            // Assert Area (testing of the action)
+            sut.NumberOfEmployments.Should().Be(expectednumberofemployment);
+        } // End of Add_First_Employment_Instance Test
+
+
+
+
+
+
 
 
 
@@ -160,12 +223,7 @@ namespace TDDUnitTestDemo
         public void Throw_Exception_When_setting_FirstName_To_Missing_Data(string changename)
         {
             // Arrange Area (setup)
-            string firstname = "don";
-            string lastname = "welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
-            Person me = new Person(firstname, lastname, address, null);
-            
+            Person me = Make_SUT_Instance();
 
             // Act Area (execution) ------ SUT means subject under test
             // Testing will the property capture an invalid name change
@@ -183,12 +241,7 @@ namespace TDDUnitTestDemo
         public void Throw_Exception_When_setting_LastName_To_Missing_Data(string changename)
         {
             // Arrange Area (setup)
-            string firstname = "don";
-            string lastname = "welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
-            Person me = new Person(firstname, lastname, address, null);
-
+            Person me = Make_SUT_Instance();
 
             // Act Area (execution) ------ SUT means subject under test
             // Testing will the property capture an invalid name change
@@ -211,12 +264,7 @@ namespace TDDUnitTestDemo
         {
 
             // Arrange Area (setup)
-            string firstname = "don";
-            string lastname = "welch";
-            Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
-            string expectedaddress = "123,Maple St.,Edmonton,AB,T6Y7U8";
-            Person me = new Person(firstname, lastname, address, null);
-
+            Person me = Make_SUT_Instance();
 
             // Act Area (execution) ------ SUT means subject under test
             Action action = () => me.ChangeName(changedfirstname, changedlastname);

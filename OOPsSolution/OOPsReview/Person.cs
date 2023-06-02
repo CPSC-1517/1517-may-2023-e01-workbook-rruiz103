@@ -45,7 +45,7 @@ namespace OOPsReview
 
         // EmploymentPositions Property
         public List<Employment> EmploymentPositions
-        { get; set; } //= new List<Employment>(); // End of EmploymentPositions Property
+        { get; set; } = new List<Employment>(); // End of EmploymentPositions Property
 
         // FullName Property
         public string FullName

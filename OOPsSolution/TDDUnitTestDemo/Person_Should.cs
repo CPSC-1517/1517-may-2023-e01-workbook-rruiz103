@@ -162,19 +162,28 @@ namespace TDDUnitTestDemo
             string lastname = "welch";
             Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
             List<Employment> employments = new List<Employment>();
-            employments.Add(new Employment("TDD member", SupervisoryLevel.TeamMember, new DateTime(2016, 03, 10)));
-            employments.Add(new Employment("TDD Lead", SupervisoryLevel.TeamLeader, new DateTime(2020, 03, 10)));
-            
+            Employment emp1 = new Employment("TDD member", SupervisoryLevel.TeamMember, new DateTime(2016, 03, 10));
+            Employment emp2 = new Employment("TDD Lead", SupervisoryLevel.TeamLeader, new DateTime(2020, 03, 10));
+            employments.Add(emp1);
+            employments.Add(emp2);
             Person sut = new Person(firstname, lastname, address, employments);
-            int expectednumberofemployment = 3;
-
             Employment employment = new Employment("TDD Supervisor", SupervisoryLevel.Supervisor, new DateTime(2023, 03, 10));
+
+            int expectednumberofemployment = 3;
+            List<Employment> expectedemployments = new List<Employment>()
+            {
+            emp1,
+            emp2,
+            employment
+            };
+            
 
             // Act Area (execution) ------ SUT means subject under test
             sut.AddEmployment(employment);
 
             // Assert Area (testing of the action)
             sut.NumberOfEmployments.Should().Be(expectednumberofemployment);
+            sut.EmploymentPositions.Should().ContainInConsecutiveOrder(expectedemployments);
         } // End of Add_First_Employment_Instance Test
 
 
@@ -273,6 +282,24 @@ namespace TDDUnitTestDemo
             action.Should().Throw<ArgumentNullException>().WithMessage("*is required*");
 
         } // End of Throw_Exception_When_Changing_FirstName_And_LastName Test
+
+
+        public void Throw_Exception_When_Adding_Null_Employment_Instance()
+        {
+            //Arrange (setup)
+            //no employment instances
+            Person sut = Make_SUT_Instance();
+            int expectednumberofemployment = 1;
+
+            Employment employment = new Employment("TDD member", SupervisoryLevel.TeamMember, new DateTime(2018, 03, 10));
+
+            //Act (execution)
+            Action action = () => sut.AddEmployment(null);
+
+
+            //Assert (testing of the action)
+            action.Should().Throw<ArgumentNullException>().WithMessage("*is required*");
+        } // End of Add_First_Employment_Instance Test
 
 
 

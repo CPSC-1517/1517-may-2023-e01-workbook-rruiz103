@@ -211,7 +211,7 @@
 
         public override string ToString()
         {
-            return $"{Title},{Level},{StartDate.ToString("MMM dd, yyyy")},{Years}";
+            return $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
 
             // Other way to format date
             // string formattedStartDate = StartDate.ToString("MMM dd, yyyy");
@@ -235,7 +235,40 @@
 
         } // End of UpdateCurrentEmploymentYearsExperience Mwthod
 
+        public static Employment Parse(string str)
+        {
+            //Parsing attempts to change the contents of a string into another datatype
+            // example:   string 55  --> int x = int.Parse(string); success
+            //            string bob --> int x = int.Parse(string); failed with an exception message
 
+            //text is a string of csv values (comma separate values)
+            //separate the string of values into individual strings
+            //  using .Split(delimiter)
+            //a delimiter is normally some type of character
+            //for a csv, the delimiter is a comma (',')
+            //the .Split() method returns an array of strings
+            //test the array size to determine if sufficient "parts" have be supplied
+            //if not, throw a FormatException
+            //if sufficient parts have been supplied you can continue your logic in 
+            //  creating the instance of intent
+
+            string[] pieces = str.Split(',');
+            if (pieces.Length != 4)
+            {
+                throw new FormatException($"Record {str} not in the expected format.");
+            }
+
+            //if sufficient parts have been supplied you can continue your logic in 
+            //  creating the instance of intent
+
+            //create a new instance using the greedy constructor
+
+            return new Employment(pieces[0],
+                                  (SupervisoryLevel)Enum.Parse(typeof(SupervisoryLevel),pieces[1]),
+                                  DateTime.Parse(pieces[2]),
+                                  double.Parse(pieces[3])
+                                  );
+        } // End of Parse Method
 
 
     } // End Employment Class

@@ -35,8 +35,6 @@ List<Employment> Read_Employment_Collection_From_CSV()
     // filepath C:\Temp\EmploymentData.txt
     string filepathname = @"C:EmploymentData.txt";
 
-
-
     // Convert List of Employment into a List<string>
     Employment employmentinstance = null;
     List<Employment> employmentCollection= new List<Employment>();
@@ -49,9 +47,29 @@ List<Employment> Read_Employment_Collection_From_CSV()
     // use Parse from this action
 
     foreach (string line in employmentCSVStrings)
-    { 
-        employmentinstance = Employment.Parse(line);
-        employmentCollection.Add(employmentinstance);
+    {
+        try
+        {
+            employmentinstance = Employment.Parse(line);
+            employmentCollection.Add(employmentinstance);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+        }
+        catch (ArgumentException ex)
+        { 
+            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+        }
+
     }
     return employmentCollection;
 

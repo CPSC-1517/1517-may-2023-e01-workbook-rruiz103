@@ -237,39 +237,99 @@
 
         public static Employment Parse(string str)
         {
-            //Parsing attempts to change the contents of a string into another datatype
+            // Parsing attempts to change the contents of a string into another datatype
             // example:   string 55  --> int x = int.Parse(string); success
             //            string bob --> int x = int.Parse(string); failed with an exception message
 
-            //text is a string of csv values (comma separate values)
-            //separate the string of values into individual strings
+            // text is a string of csv values (comma separate values)
+            // separate the string of values into individual strings
             //  using .Split(delimiter)
-            //a delimiter is normally some type of character
-            //for a csv, the delimiter is a comma (',')
-            //the .Split() method returns an array of strings
-            //test the array size to determine if sufficient "parts" have be supplied
-            //if not, throw a FormatException
-            //if sufficient parts have been supplied you can continue your logic in 
-            //  creating the instance of intent
+            // a delimiter is normally some type of character
+            // for a csv, the delimiter is a comma (',')
+            // the .Split() method returns an array of strings
+            // test the array size to determine if sufficient "parts" have be supplied
+            // if not, throw a FormatException
+            // if sufficient parts have been supplied you can continue your logic in 
+            // creating the instance of intent
 
-            string[] pieces = str.Split(',');
+            string[] pieces = str.Split(','); 
+            // This line splits the input string str into an array of substrings using a comma (',') as the delimiter.
+            // The Split method divides the string wherever it encounters a comma and returns an array of strings.
+
+
             if (pieces.Length != 4)
             {
                 throw new FormatException($"Record {str} not in the expected format.");
             }
+            // This if statement checks if the array pieces has exactly four elements. If it doesn't, it means the input string does not have the expected number of values,
+            // and a FormatException is thrown with an error message indicating the problematic record.
 
-            //if sufficient parts have been supplied you can continue your logic in 
-            //  creating the instance of intent
+            // if sufficient parts have been supplied you can continue your logic in 
+            // creating the instance of intent
+            // create a new instance using the greedy constructor
 
-            //create a new instance using the greedy constructor
-
-            return new Employment(pieces[0],
-                                  (SupervisoryLevel)Enum.Parse(typeof(SupervisoryLevel),pieces[1]),
-                                  DateTime.Parse(pieces[2]),
-                                  double.Parse(pieces[3])
+            //  return new Employment >>> creates a new Employment instance using the constructor that takes four arguments.
+            //  The arguments are extracted from the pieces array, representing different parts of the CSV data. 
+            return new Employment(pieces[0],    //  used as the first argument, representing the job title.
+                                  (SupervisoryLevel)Enum.Parse(typeof(SupervisoryLevel),pieces[1]), // used as the second argument. It converts the string value from pieces[1] to the corresponding SupervisoryLevel enum value using the Enum.Parse method.
+                                  DateTime.Parse(pieces[2]), // used as the third argument. It converts the string value from pieces[2] to a DateTime object using the DateTime.Parse method.
+                                  double.Parse(pieces[3]) // used as the fourth argument. It converts the string value from pieces[3] to a double value using the double.Parse method.
                                   );
+
         } // End of Parse Method
 
+        public static bool TryParse(string str, out Employment employment)
+        {
+            // This method takes two parameters: str, which is the incoming input string, and employment, which is an output parameter of type Employment.
+            // The method returns a bool value indicating whether the parsing was successful (true) or not (false).
+
+            //use this method to check to see if the parse could actually be done
+            //the result of the attempt is
+            //  a) true and the converted string value is placed into the out going variable
+            //  b) false and no conversion of the string is done
+            //     (optional,
+            //          you can include a try/catch within the method to capture (error handling) the 
+            //          Parse error so that it does not return to the program
+            //          and your false value will have a meaning)
+
+            //example   if (xxxx.TryParse(string, out myNumericvalue)) { ..... } else { .... }
+
+            bool result = true; // assume success
+            //This line initializes a bool variable named result to true.This variable will track the success or failure of the parsing attempt.
+
+            employment = null;
+            // output parameter is initialized to null.
+
+            try
+            {
+                employment = Parse(str);
+                // The code inside the try block attempts to parse the input string str by calling the Parse method. If the parsing is successful,
+                // the resulting Employment instance is assigned to the employment output parameter.
+                // If a FormatException is thrown during the parsing process, it means the string format is invalid, and the catch block is executed.
+            }
+            catch (FormatException ex)
+            {
+                result = false; // indicates failure
+                // In the catch block, the result variable is set to false to indicate that the parsing failed.
+            }
+
+            return result;
+            // The method returns the value of the result variable, which indicates whether the parsing was successful(true) or not(false).
+
+            //alternative
+            //if you wish to have the FormatException passed on to the calling coding
+            //  the DO NOT include the try/catch within your TryParse method
+
+            // result = false;
+            // if (string.IsNullOrWhiteSpace(str))
+            // {
+            //    throw new ArgumentNullException("No value was supplied for parsing");
+            // }
+            // employment = null;
+            // employment = Parse(str);
+            // return true;
+
+        }
 
     } // End Employment Class
 

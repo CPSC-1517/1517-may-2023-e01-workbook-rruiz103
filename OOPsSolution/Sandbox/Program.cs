@@ -4,9 +4,10 @@ using System.Security.Cryptography;
 
 Console.WriteLine("Hello, World!");
 
-//driver code
-// RecordSample();
-// RefractorSample();
+// driver code
+// RecordSamples();
+// RefactorSample();
+// FileIOCSV();
 
 FileIOCSV();
 
@@ -24,7 +25,7 @@ void FileIOCSV()
     List<Employment> employmentsRead = new List<Employment>();
     employmentsRead = Read_Employment_Collection_From_CSV();
     DumpEmployments(employmentsRead);
-}
+} // End of FileIOCSV
 
 List<Employment> Read_Employment_Collection_From_CSV()
 {
@@ -36,45 +37,51 @@ List<Employment> Read_Employment_Collection_From_CSV()
     string filepathname = @"C:EmploymentData.txt";
 
     // Convert List of Employment into a List<string>
-    Employment employmentinstance = null;
+    Employment employmentInstance = null;
     List<Employment> employmentCollection= new List<Employment>();
 
-    // ReadAllLines
-    // returns an array of all lines from a file as strings
-    string[] employmentCSVStrings = File.ReadAllLines(filepathname);
-
-    // convert each string from the CSV data into an Employment Instance
-    // use Parse from this action
-
-    foreach (string line in employmentCSVStrings)
+    try
     {
-        try
-        {
-            employmentinstance = Employment.Parse(line);
-            employmentCollection.Add(employmentinstance);
-        }
-        catch (ArgumentNullException ex)
-        {
-            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
-        }
-        catch (ArgumentException ex)
-        { 
-            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
-        }
+        //ReadAllLines
+        //returns an array of all lines from a file as strings
+        string[] employmentCSVStrings = File.ReadAllLines(filepathname);
 
+        //convert each string from the CSV data into an Employment Instance
+        //use the .Parse from this action
+
+        foreach (string line in employmentCSVStrings)
+        {
+            try
+            {
+                employmentInstance = Employment.Parse(line);
+                employmentCollection.Add(employmentInstance);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\tRecord Error: {ex.Message} on data line {line}");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
     }
     return employmentCollection;
 
 
-}
+} // End of Read_Employment_Collection_From_CSV
 
 void Write_Employment_Collection_To_CSV(List<Employment> employments)
 {
@@ -107,8 +114,6 @@ void DumpEmployments(List<Employment> employments)
 
 }
 
-
-/*
 void RecordSample()
 {
 
@@ -132,6 +137,8 @@ void RefractorSample()
     // Refractoring is the process of restructing code, while not
     // changing its original functionality. The goal is to improve internal
     // code by making small changes without altering the codes external behavior
+
+    Residence myHome = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
 
     // Original Code
     bool flag = false;
@@ -179,7 +186,17 @@ void RefractorSample()
                 break;
             }
 
-
     }
+
+    //what would a person need to do if unit testing does not exists
+    string firstname = "don";
+    string lastname = "welch";
+    Residence address = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+    Person me = new Person(firstname, lastname, address, null);
+
+    //conside doing a loop where I make changes to the "changename", include try catch error handling
+    //also need a interface of Console prompt and read lines.
+
+    //me.FirstName = changename;
+
 } // End of RefractorSample
-*/

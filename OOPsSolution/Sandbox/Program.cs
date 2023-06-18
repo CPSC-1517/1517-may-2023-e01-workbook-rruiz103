@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using OOPsReview;
-using System.Security.Cryptography;
-
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json; // for Json serialization namespace
 Console.WriteLine("Hello, World!");
 
 // driver code
@@ -9,11 +9,6 @@ Console.WriteLine("Hello, World!");
 // RefactorSample();
 // FileIOCSV();
 
-// Explore JSon files writing and reading
-// Create a Person instance with name, address and employments
-
-// Person me = CreatePerson();
-// DisplayPerson(me);
 
 // Accessor Review Sample
 AccessorReview ar = new OOPsReview.AccessorReview();
@@ -27,7 +22,16 @@ for (int i = 0; i < 10; i++)
     Console.WriteLine($"Number1: {ar.Number1} Number2: {ar.Number2} Add: {ar.Add}");
 }
 
+// Explore JSon files writing and reading
+// Create a Person instance with name, address and employments
 
+Person me = CreatePerson();
+DisplayPerson(me);
+// filepath C:\Temp\PersonData.json
+string filepathname = @"C:\Users\rjpr_\PersonData.json";
+SaveAsJson(me, filepathname);
+Person jsonMe = ReadAsJson(filepathname);
+DisplayPerson(jsonMe);
 
 Person CreatePerson()
 {
@@ -35,7 +39,7 @@ Person CreatePerson()
     List<Employment> employments = Read_Employment_Collection_From_CSV();
     Person person = new Person("don","welch",myHome,employments);
     return person;
-} // CreatePerson
+} // End of CreatePerson
 
 void DisplayPerson(Person person)
 {
@@ -47,7 +51,64 @@ void DisplayPerson(Person person)
     {
         Console.WriteLine($"\t{item.ToString()}");
     }
-} // DisplayPerson
+} // End of DisplayPerson
+
+void SaveAsJson(Person person, string filepathname)
+{
+    // the term use to write Json file is called serialization
+    // the classes used to are referred to serializers
+    // with writing we can make the file produce more readable format
+    // using indentation
+    // JSon is very good at using objects and properties, HOWEVER
+    // it needs help to / prompting to work better with fields
+    // to help with public field within a class add an annotation (attributes title)
+    // in front of the field declaration called [JsonInclude]
+    // also the namespace using  System.Text.Json.Serialization;
+    // example: ASsume class has a public string called FieldNotAProperty
+    // [JsonInclude]
+    // public string FieldNotAProperty
+
+    // create options to use during serialization
+    JsonSerializerOptions option = new JsonSerializerOptions
+    {
+        // during this instance creation one can refer to properties
+        // within the class directly by name and assign a value to that property
+        WriteIndented = true,
+        IncludeFields = true // this is for the public non property fields
+    };
+
+    // remember to case the Serialized<T> to the appropriate class definition
+    // this converts your instance to a Json sting
+    string jsonstring = JsonSerializer.Serialize<Person>(person, option);
+
+    // write the Json sting out to a .json text file
+    File.WriteAllText(filepathname, jsonstring);
+
+
+} // End of SaveAsJson
+
+Person ReadAsJson(string filepathname)
+{
+    Person person = null;
+    try
+    {
+        //bring in the json txt file
+        string jsonstring = File.ReadAllText(filepathname);
+
+        // use the deserializer to unpack the json string into the expected structure <Person>
+        // it is important that the greedy constructor parameter names
+        // are indentical to the attribute names used in the json string
+        // they are not case sensitive 
+        // they do not have to be in the same physical order as the
+        // json string
+        person = JsonSerializer.Deserialize<Person>(jsonstring);
+    }
+    catch (Exception ex)
+    { 
+        Console.WriteLine(ex.Message );
+    }
+    return person;
+}
 
 void FileIOCSV()
 {
@@ -128,7 +189,7 @@ void Write_Employment_Collection_To_CSV(List<Employment> employments)
     // File IO streams (writer and reader) are built into methods of the file class
 
     // filepath C:\Temp\EmploymentData.txt
-    string filepathname = @"C:EmploymentData.txt";
+    string filepathname = @"C:\Users\rjpr_\EmploymentData.txt";
 
     // Convert List of Employment into a List<string>
     List<string> employmentCollectionAsStrings = new List<string>();

@@ -9,7 +9,45 @@ Console.WriteLine("Hello, World!");
 // RefactorSample();
 // FileIOCSV();
 
-FileIOCSV();
+// Explore JSon files writing and reading
+// Create a Person instance with name, address and employments
+
+// Person me = CreatePerson();
+// DisplayPerson(me);
+
+// Accessor Review Sample
+AccessorReview ar = new OOPsReview.AccessorReview();
+Random rnd = new Random();
+for (int i = 0; i < 10; i++)
+{
+    ar.Number1 = rnd.Next(1, 11); // using the set in the property
+    ar.Number2 = rnd.Next(1, 11); // using the set in the property
+    // the get in the Add property is used to return the calculated value
+    // the get in Number1 and Number2 properties are used to return the data
+    Console.WriteLine($"Number1: {ar.Number1} Number2: {ar.Number2} Add: {ar.Add}");
+}
+
+
+
+Person CreatePerson()
+{
+    Residence myHome = new Residence(123, "Maple St.", "Edmonton", "AB", "T6Y7U8");
+    List<Employment> employments = Read_Employment_Collection_From_CSV();
+    Person person = new Person("don","welch",myHome,employments);
+    return person;
+} // CreatePerson
+
+void DisplayPerson(Person person)
+{
+    Console.WriteLine("\nPerson Data\n");
+    Console.WriteLine($"Name: {person.FullName}");
+    Console.WriteLine($"Residence: {person.Address.ToString()}");
+    Console.WriteLine("\nEmployments");
+    foreach (var item in person.EmploymentPositions)
+    {
+        Console.WriteLine($"\t{item.ToString()}");
+    }
+} // DisplayPerson
 
 void FileIOCSV()
 {
@@ -129,7 +167,6 @@ void RecordSample()
     Console.WriteLine(myHome.ToString());
 
 } // End of RecordSample
-
 
 void RefractorSample()
 {

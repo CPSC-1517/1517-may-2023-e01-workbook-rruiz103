@@ -1,4 +1,6 @@
-﻿namespace OOPsReview
+﻿using System.Text.Json.Serialization;
+
+namespace OOPsReview
 {
     public class Employment
     {
@@ -104,6 +106,7 @@
             get;
             private set;
         } // End of StartDate Property
+
 
         // Constructors
         // Purpose of constructor is to create an instance of your class in a known state

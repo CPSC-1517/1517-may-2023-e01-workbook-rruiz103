@@ -24,7 +24,6 @@ for (int i = 0; i < 10; i++)
 
 // Explore JSon files writing and reading
 // Create a Person instance with name, address and employments
-
 Person me = CreatePerson();
 DisplayPerson(me);
 // filepath C:\Temp\PersonData.json

@@ -33,56 +33,91 @@ Controls: label, input, select, textarea and button
            can set the rows and cols attributes to control the size of the textarea
 
 <select> use to accept form input for a list of items
-        and other names: combobox, dropdownlist, selection list
-        <select> requires a paired element tags set 
-<option> this control can have an optional prompt line which would be
-        first line in the list. 
-        <select> requires a paired element tags set
-        the option tag can have a value attribute that will be returned  to the page model
+    and  other names: combobox, dropdownlist, selectionlist  
+<option> this control can have an optional "prompt line" which
+             would be the first line in the list. 
+          select requires a paired element tag set
+          the option tag can have a value attribute which is the value
+             that will be returned to the PageModel
+          option requires a paired element tag set
+          each line in the list is a separate option tag
+          this control can be coded with "hard-coded" value OR
+             logically load from a collection of data
+          syntax of option tag is : 
+             <option value="xxxx">yyyy</option>
+                where xxxx is the value to be returned to the PageModel
+                           this attribute can be omitted if you are not using
+                            the value attribute then the return value will be
+                            the text displayed in the list
+                      yyyy is the text to be displayed in the list
+*@
+@*
+    the following is a setup that allows the display of recorded errors
+       saved within your PageModel when you use ModelState. The method used
+       to save each error is .AddModelError(xxxx).
+    it will automatically format your errors in a nice list using asp-validation-summary
 
-        <option> requires a paired element tags set
-        each line in the list is a separate option tag
-        this control can be coded with hardcoded value or
-        logically load a collection of data 
-        syntax of option tag is:
-        <option value="xxxx">yyy</option>
-        where xxx 
+    an alternative is for you to do your own coding
+    in this case your will need
+    a) a property in your PageModel (List<string> ErrorList)
+    b) you would have to code your own loop containing an unordered list. Each <li> would 
+        represent an error line
 *@
 
-<form method="post">
+<div asp-validation-summary="All" >
+    @if (ModelState.ErrorCount > 0)
+    {
+        <p>Please review the (validation summary) following concerns to correct your submission:</p>
+    }
 
+   
+</div>
+<div>
+@if (Model.ErrorList.Count() > 0)
+{
+    <p>Please review the (manual display) following concerns to correct your submission:</p>
+    <ul>
+        @foreach (var error in Model.ErrorList)
+        {
+            <l1>@error</l1><br/>
+        }
+    </ul>
+}
+</div>
+
+<form method="post">
     <label>
         Enter a number (standard text box control):
         <input type="number" asp-for="Num" step="0.01"/>
     </label>
     <label>
         TextArea for large amounts of text (ie comments):
-        <textarea asp-for="MassText" rows="5" cols="60"></textarea>
+        <textarea asp-for="MassText" rows="5" cols="60" ></textarea>
     </label>
     <label>
         Select a favorite course from the dropdown list (select control):
         <select asp-for="FavouriteCourse">
-            <option value="0"> on screen prompt line ....  </option>
-            <option value="1008"> Digital Media Tools ....  </option>
-            <option value="1012"> Programming Fundamentals ....  </option>
-            <option value="1017"> Web Design Fundamentals ....  </option>
-            <option value="1517"> Intro to Web Applications ....  </option>
+            <option value="0">on screen prompt line ....</option>
+            <option value="1008">Digital Media Tools</option>
+            <option value="1012">Programming Fundamentals</option>
+            <option value="1017">Web Design Fundamentals</option>
+            <option value="1517">Introduction to Web Applications</option>
         </select>
     </label>
     <label>
-        Using a Select without a value on the option tag:
+        Using a select without a value on the option tag:
         <select asp-for="FavouriteCourseNoValueOnOption">
-            <option > on screen prompt line ....  </option>
-            <option > Digital Media Tools ....  </option>
-            <option > Programming Fundamentals ....  </option>
-            <option > Web Design Fundamentals ....  </option>
-            <option > Intro to Web Applications ....  </option>
+            <option>on screen prompt line ....</option>
+            <option>Digital Media Tools</option>
+            <option>Programming Fundamentals</option>
+            <option>Web Design Fundamentals</option>
+            <option>Introduction to Web Applications</option>
         </select>
     </label>
-    <br></br>
-    <button type="submit asp-page-handler="ControlProcessing"> Submit Form Data</button>
-
-
+    <br/><br/>
+    <button type="submit" asp-page-handler="ControlProcessing">Submit Form Data</button>
+    &nbsp;&nbsp;
+    <button type="submit" asp-page-handler="RedirectPage">Go to Basic Events</button>
 </form>
-<br></br>
-Processing Results @Model.FeedBack;
+<br /><br/>
+Processing Results: @Model.FeedBack
